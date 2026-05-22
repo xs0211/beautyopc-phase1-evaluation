@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>F13 算力管理与充值消耗闭环</title>
+  <style>
+    :root {
+      --paper: #fbfaf6;
+      --surface: #ffffff;
+      --ink: #141413;
+      --text: #34332f;
+      --muted: #716d65;
+      --line: #dfd9ce;
+      --clay: #b86545;
+      --clay-soft: #f3e2d9;
+      --sage: #466153;
+      --stone: #ece7dd;
+      --shadow: 0 24px 70px rgba(41, 35, 28, .08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(184, 101, 69, .12), transparent 30%),
+        linear-gradient(180deg, #fffdf8 0%, var(--paper) 42%, #f2eee7 100%);
+      color: var(--ink);
+    }
+    .page {
+      width: min(1100px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 28px 0 72px;
+    }
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .back {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .hero {
+      min-height: 360px;
+      background: var(--ink);
+      color: #fffaf1;
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      padding: 40px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) 340px;
+      gap: 28px;
+      align-items: stretch;
+      margin-bottom: 18px;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero:after {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 50%;
+      right: -88px;
+      top: -76px;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      height: 30px;
+      padding: 0 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.1);
+      color: #fffaf1;
+      border: 1px solid rgba(255,255,255,.16);
+      font-size: 13px;
+      font-weight: 900;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.02;
+      letter-spacing: 0;
+      max-width: 720px;
+    }
+    .lead {
+      color: rgba(255,250,241,.78);
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.75;
+      max-width: 720px;
+    }
+    .hero-card {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 24px;
+      padding: 22px;
+      display: grid;
+      align-content: space-between;
+      gap: 20px;
+    }
+    .hero-card b {
+      display: block;
+      font-size: 42px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .hero-card span {
+      color: rgba(255,250,241,.72);
+      line-height: 1.6;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .block {
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .block.full { grid-column: 1 / -1; }
+    h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+    p {
+      color: var(--text);
+      line-height: 1.72;
+      margin: 0;
+    }
+    .kicker {
+      color: var(--clay);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .path {
+      grid-column: 1 / -1;
+      display: grid;
+      gap: 16px;
+    }
+    .journey-caps {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .path-panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 22px;
+      min-height: 134px;
+    }
+    .path-panel.entry { background: var(--clay-soft); }
+    .path-panel.result { background: #edf2ef; }
+    .path-panel strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .flowchart {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 22px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 22px;
+      position: relative;
+    }
+    .flow-node {
+      min-height: 126px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--paper);
+      padding: 16px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .flow-node:not(:last-child):after {
+      content: "";
+      position: absolute;
+      right: -19px;
+      top: 50%;
+      width: 16px;
+      height: 2px;
+      background: var(--clay);
+    }
+    .flow-node:not(:last-child):before {
+      content: "";
+      position: absolute;
+      right: -22px;
+      top: calc(50% - 4px);
+      width: 8px;
+      height: 8px;
+      border-top: 2px solid var(--clay);
+      border-right: 2px solid var(--clay);
+      transform: rotate(45deg);
+    }
+    .flow-node span {
+      color: var(--clay);
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 10px;
+      letter-spacing: .06em;
+    }
+    .flow-node strong {
+      font-size: 15px;
+      line-height: 1.55;
+    }
+    ul {
+      padding-left: 18px;
+      margin: 0;
+      color: var(--text);
+      line-height: 1.75;
+    }
+    .clean-list {
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+    .clean-list li {
+      padding: 12px 12px 12px 38px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      position: relative;
+    }
+    .clean-list li:before {
+      content: "";
+      position: absolute;
+      left: 14px;
+      top: 18px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--clay);
+    }
+    .info {
+      display: grid;
+      gap: 10px;
+    }
+    .info-row {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      gap: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    .info-row:last-child { border-bottom: 0; padding-bottom: 0; }
+    .label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 44px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.2);
+      background: #fffaf1;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 900;
+      font-size: 14px;
+    }
+    .btn.secondary {
+      background: transparent;
+      color: #fffaf1;
+    }
+    .dev-links {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .dev-link {
+      display: block;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      text-decoration: none;
+      background: #fff;
+      color: var(--ink);
+      font-weight: 900;
+    }
+    .dev-link span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .design-placeholder {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 18px;
+      align-items: center;
+      background:
+        linear-gradient(135deg, rgba(184,101,69,.12), rgba(73,98,86,.1)),
+        #fff;
+      border: 1px dashed #c8bfb2;
+      border-radius: 26px;
+      padding: 24px;
+    }
+    .design-preview {
+      height: 180px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, transparent 31%, rgba(20,20,19,.08) 31%, rgba(20,20,19,.08) 32%, transparent 32%),
+        linear-gradient(180deg, #fff 0 20%, #f4efe7 20% 42%, #fff 42% 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .design-preview:before {
+      content: "";
+      position: absolute;
+      left: 24px;
+      top: 24px;
+      width: 108px;
+      height: 132px;
+      border-radius: 20px;
+      background: #fff;
+      border: 1px solid var(--line);
+      box-shadow: 130px 0 0 #fff, 260px 0 0 #fff;
+    }
+    .design-placeholder p {
+      margin-top: 8px;
+      color: var(--muted);
+    }
+    .prototype-embed {
+      grid-column: 1 / -1;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .prototype-shell {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      overflow: hidden;
+      background: var(--stone);
+      height: 680px;
+    }
+    .prototype-shell iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      background: #fff;
+    }
+    .prototype-caption {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .prototype-caption p {
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .proto-open {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fffaf1;
+      text-decoration: none;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    @media (max-width: 880px) {
+      .hero, .grid, .journey-caps, .design-placeholder { grid-template-columns: 1fr; }
+      .hero { padding: 24px; }
+      .block.full { grid-column: auto; }
+      .path { grid-column: auto; }
+      .dev-links { grid-template-columns: 1fr; }
+      .prototype-caption { align-items: flex-start; flex-direction: column; }
+      .prototype-shell { height: 620px; }
+      .flowchart { grid-template-columns: 1fr; }
+      .flow-node:not(:last-child):after {
+        right: auto;
+        left: 24px;
+        top: auto;
+        bottom: -15px;
+        width: 2px;
+        height: 14px;
+      }
+      .flow-node:not(:last-child):before {
+        right: auto;
+        left: 20px;
+        top: auto;
+        bottom: -20px;
+        transform: rotate(135deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="top">
+      <a class="back" href="../index.html">返回交付包首页</a>
+      <a class="back" href="../flows/F13_%E7%AE%97%E5%8A%9B%E7%AE%A1%E7%90%86%E4%B8%8E%E5%85%85%E5%80%BC%E6%B6%88%E8%80%97%E9%97%AD%E7%8E%AF.md">打开Markdown版</a>
+    </div>
+    <section class="hero">
+      <div>
+        <div class="meta">
+          <span class="pill">F13</span>
+          <span class="pill">平台通用</span>
+          <span class="pill">建议P0</span>
+        </div>
+        <h1>算力管理与充值消耗闭环</h1>
+        <p class="lead">为已开发AIGC提供算力充值、扣减、明细和失败返还账本。</p>
+        <div class="actions">
+          <a class="btn" href="https://www.figma.com/proto/wFw5s743SaCaJu3JdTDxWp/BeautyOPC?node-id=912-4536&starting-point-node-id=912%3A4536&scaling=scale-down&content-scaling=fixed">查看该流程原型</a>
+          <a class="btn secondary" href="../flows/F13_%E7%AE%97%E5%8A%9B%E7%AE%A1%E7%90%86%E4%B8%8E%E5%85%85%E5%80%BC%E6%B6%88%E8%80%97%E9%97%AD%E7%8E%AF.md">开发Markdown</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div>
+          <b>6-9人日</b>
+          <span>按AI协助开发估算，含基础联调、测试与验收准备。</span>
+        </div>
+        <div>
+          <span>面向用户</span>
+          <p style="color:#fffaf1;font-weight:900;margin-top:6px;">OPC用户 / 财务 / 平台运营</p>
+        </div>
+      </div>
+    </section>
+    <section class="grid">
+      <article class="prototype-embed">
+        <div class="prototype-caption">
+          <div>
+            <div class="kicker">Interactive prototype</div>
+            <h2>可交互原型</h2>
+            <p>这里嵌入的是 Figma Prototype，从本流程起始画板打开，可以直接点击体验流程。</p>
+          </div>
+          <a class="proto-open" href="https://www.figma.com/proto/wFw5s743SaCaJu3JdTDxWp/BeautyOPC?node-id=912-4536&starting-point-node-id=912%3A4536&scaling=scale-down&content-scaling=fixed" target="_blank" rel="noreferrer">新窗口打开</a>
+        </div>
+        <div class="prototype-shell">
+          <iframe src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FwFw5s743SaCaJu3JdTDxWp%2FBeautyOPC%3Fnode-id%3D912-4536%26starting-point-node-id%3D912%253A4536%26scaling%3Dscale-down%26content-scaling%3Dfixed" allowfullscreen></iframe>
+        </div>
+      </article>
+      <article class="path">
+        <div class="journey-caps">
+          <div class="path-panel entry">
+            <div class="kicker">Start</div>
+            <strong>从哪里开始</strong>
+            <p>OPC用户进入AIGC算力管理</p>
+          </div>
+          <div class="path-panel result">
+            <div class="kicker">Result</div>
+            <strong>最后得到什么</strong>
+            <p>AI内容生成具备清晰的付费和账本</p>
+          </div>
+        </div>
+        <div class="flowchart">
+          
+          <div class="flow-node">
+            <span>开始</span>
+            <strong>查看余额</strong>
+          </div>
+          <div class="flow-node">
+            <span>过程</span>
+            <strong>选择充值套餐</strong>
+          </div>
+          <div class="flow-node">
+            <span>过程</span>
+            <strong>微信支付到账</strong>
+          </div>
+          <div class="flow-node">
+            <span>完成</span>
+            <strong>AIGC使用后扣减并记录</strong>
+          </div>
+        </div>
+      </article>
+      <article class="block">
+        <div class="kicker">For whom</div>
+        <h2>给谁做</h2>
+        <p>OPC用户、财务、平台运营</p>
+      </article>
+      <article class="block">
+        <div class="kicker">Business value</div>
+        <h2>业务价值</h2>
+        <p>让AIGC商业化有清晰的付费和消耗依据。</p>
+      </article>
+      <article class="block full">
+        <div class="kicker">Experience</div>
+        <h2>用户体感</h2>
+        <p>用户知道余额从哪里来、用在哪里、失败有没有返还。</p>
+      </article>
+      <article class="block">
+        <div class="kicker">Build scope</div>
+        <h2>开发内容</h2>
+        <ul class="clean-list"><li>算力余额</li><li>套餐选择</li><li>微信支付</li><li>到账成功</li><li>明细筛选</li><li>失败返还</li><li>支付失败保留订单</li></ul>
+      </article>
+      <article class="block">
+        <div class="kicker">Files & modules</div>
+        <h2>相关开发文件/模块</h2>
+        <ul class="clean-list"><li>小程序：算力余额 / 套餐充值 / 消耗明细</li><li>接口：微信支付、算力账本、扣减返还</li><li>后台：充值订单和异常处理</li></ul>
+      </article>
+      <article class="block">
+        <div class="kicker">Dependencies</div>
+        <h2>依赖关系</h2>
+        <ul class="clean-list"><li>微信支付</li><li>AIGC扣减规则</li><li>账本服务</li><li>财务口径</li></ul>
+      </article>
+      <article class="block">
+        <div class="kicker">Delivery</div>
+        <h2>人力与周期</h2>
+        <div class="info">
+          <div class="info-row"><span class="label">建议投入</span><span>小程序前端1、后端1.5、测试0.5</span></div>
+          <div class="info-row"><span class="label">开发周期</span><span>6-9人日</span></div>
+          <div class="info-row"><span class="label">估算口径</span><span>按AI协助开发估算，已包含基础联调与测试。</span></div>
+        </div>
+      </article>
+      <article class="block">
+        <div class="kicker">Acceptance</div>
+        <h2>交付验收</h2>
+        <ul class="clean-list"><li>支付后算力到账</li><li>AIGC使用正确扣减</li><li>失败自动返还</li><li>明细可按类型和日期查询</li></ul>
+      </article>
+      <article class="block full">
+        <div class="kicker">High fidelity design</div>
+        <h2>高保真设计稿位置</h2>
+        <div class="design-placeholder">
+          <div>
+            <strong>下一阶段补充该流程的高保真设计稿</strong>
+            <p>这里预留给高保真页面截图、Figma设计稿直达链接和最终交互验收说明。当前阶段先以线框原型和流程评估为准。</p>
+          </div>
+          <div class="design-preview" aria-hidden="true"></div>
+        </div>
+      </article>
+      <article class="block full">
+        <div class="kicker">Decision</div>
+        <h2>业务方确认点</h2>
+        <ul class="clean-list">
+          <li>是否进入一期开发范围。</li>
+          <li>是否认可该流程的用户角色和业务边界。</li>
+          <li>是否已有接口、数据、模板或外部负责人。</li>
+          <li>是否接受当前交付标准作为验收依据。</li>
+        </ul>
+        <div class="dev-links">
+          <a class="dev-link" href="../flows/F13_%E7%AE%97%E5%8A%9B%E7%AE%A1%E7%90%86%E4%B8%8E%E5%85%85%E5%80%BC%E6%B6%88%E8%80%97%E9%97%AD%E7%8E%AF.md">Markdown PRD<span>开发拆任务与二次维护</span></a>
+          <a class="dev-link" href="../04_开发拆分与排期评估.md">排期总表<span>查看本流程在整体排期中的位置</span></a>
+          <a class="dev-link" href="https://www.figma.com/proto/wFw5s743SaCaJu3JdTDxWp/BeautyOPC?node-id=912-4536&starting-point-node-id=912%3A4536&scaling=scale-down&content-scaling=fixed">Figma 原型<span>直达该流程线框与交互</span></a>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

@@ -3,1288 +3,1086 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BeautyOPC 一期项目速览</title>
+  <title>BeautyOPC 一期开发交付包</title>
   <style>
     :root {
-      --bg: #f5f6f8;
+      --paper: #fbfaf6;
       --surface: #ffffff;
-      --ink: #111318;
-      --muted: #666c78;
-      --soft: #eef0f4;
-      --line: #e1e4ea;
-      --primary: #6818ff;
-      --primary-soft: #f2ecff;
-      --green: #168a52;
-      --green-soft: #eaf7f0;
-      --orange: #b65d00;
-      --orange-soft: #fff4e6;
-      --blue: #1e5bb8;
-      --blue-soft: #edf4ff;
-      --danger: #b33a3a;
-      --radius: 18px;
-      --shadow: 0 14px 40px rgba(17, 19, 24, 0.08);
+      --ink: #141413;
+      --text: #36332f;
+      --muted: #736f66;
+      --line: #ded8cd;
+      --clay: #b86545;
+      --clay-soft: #f4e4dc;
+      --sage: #496256;
+      --sage-soft: #e9f0ec;
+      --gold: #c79539;
+      --stone: #eee8dd;
+      --soft: #f8f4ed;
+      --shadow: 0 24px 70px rgba(41, 35, 28, .08);
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
       color: var(--ink);
-      background: var(--bg);
-      line-height: 1.55;
+      background:
+        radial-gradient(circle at 9% 2%, rgba(184, 101, 69, .14), transparent 26%),
+        radial-gradient(circle at 92% 6%, rgba(73, 98, 86, .16), transparent 26%),
+        linear-gradient(180deg, #fffdf8 0%, var(--paper) 44%, #f0ebe2 100%);
     }
-
-    button {
-      font: inherit;
-    }
-
-    .page {
-      width: min(1180px, calc(100% - 40px));
-      margin: 0 auto;
-      padding: 28px 0 60px;
-    }
-
+    a { color: inherit; }
     .topbar {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      align-items: center;
-      margin-bottom: 18px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(251, 250, 246, .88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
     }
-
+    .topbar-inner {
+      width: min(1220px, calc(100% - 36px));
+      margin: 0 auto;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      letter-spacing: 0;
+      gap: 10px;
+      font-weight: 900;
     }
-
-    .logo-mark {
-      width: 36px;
-      height: 36px;
-      border-radius: 11px;
+    .mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
       background: var(--ink);
       position: relative;
-      flex: 0 0 auto;
     }
-
-    .logo-mark::before,
-    .logo-mark::after {
+    .mark:before {
       content: "";
+      width: 15px;
+      height: 15px;
+      border-radius: 99px;
+      border: 2px solid #fffaf1;
+      background: transparent;
       position: absolute;
-      background: #fff;
-      border-radius: 999px;
+      left: 8px;
+      top: 7px;
     }
-
-    .logo-mark::before {
-      width: 18px;
-      height: 5px;
-      left: 9px;
-      top: 11px;
-    }
-
-    .logo-mark::after {
+    .mark:after {
+      content: "";
       width: 10px;
-      height: 10px;
-      right: 8px;
-      bottom: 8px;
+      height: 2px;
+      border-radius: 99px;
+      background: #fffaf1;
+      position: absolute;
+      right: 5px;
+      bottom: 9px;
+      transform: rotate(42deg);
     }
-
-    .meta {
-      color: var(--muted);
+    .nav {
+      display: flex;
+      gap: 2px;
       font-size: 14px;
-      white-space: nowrap;
+      color: var(--muted);
+      background: rgba(255,255,255,.64);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px;
     }
-
+    .nav a {
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+    }
+    .nav a:hover { background: var(--ink); color: #fffaf1; }
+    main {
+      width: min(1220px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 32px 0 88px;
+    }
     .hero {
-      background: var(--surface);
-      border-radius: 28px;
-      box-shadow: var(--shadow);
-      padding: 38px;
       display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
-      gap: 30px;
-      align-items: stretch;
-      border: 1px solid rgba(225, 228, 234, 0.7);
+      grid-template-columns: minmax(0, 1.08fr) 420px;
+      gap: 18px;
+      margin-bottom: 20px;
     }
-
+    .hero-main, .hero-side, .section, .flow-card, .audience-card, .path-card, .decision-card {
+      background: rgba(255, 255, 255, .8);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+    }
+    .hero-main {
+      padding: 54px;
+      min-height: 500px;
+      position: relative;
+      overflow: hidden;
+      background: var(--ink);
+      color: #fffaf1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hero-main:after {
+      content: "";
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.16);
+      background: transparent;
+      position: absolute;
+      right: -120px;
+      top: -90px;
+    }
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 12px;
+      padding: 8px 13px;
       border-radius: 999px;
-      background: var(--primary-soft);
-      color: var(--primary);
-      font-weight: 700;
+      background: rgba(255,255,255,.1);
+      color: #fffaf1;
+      border: 1px solid rgba(255,255,255,.16);
       font-size: 13px;
-      margin-bottom: 18px;
+      font-weight: 800;
+      margin-bottom: 22px;
     }
-
-    .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: currentColor;
-    }
-
     h1 {
-      margin: 0;
-      font-size: clamp(34px, 5vw, 64px);
-      line-height: 1.05;
+      font-size: clamp(42px, 6vw, 76px);
+      line-height: .98;
       letter-spacing: 0;
+      margin: 0 0 24px;
+      max-width: 880px;
     }
-
-    .lead {
-      font-size: 20px;
-      color: #383d48;
-      margin: 18px 0 0;
-      max-width: 720px;
+    .hero-main p {
+      max-width: 760px;
+      margin: 0;
+      color: rgba(255,250,241,.76);
+      font-size: 18px;
+      line-height: 1.75;
     }
-
+    .hero-proof {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 34px;
+      position: relative;
+      z-index: 1;
+    }
+    .proof-item {
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 20px;
+      padding: 16px;
+      background: rgba(255,255,255,.08);
+    }
+    .proof-item b {
+      display: block;
+      font-size: 26px;
+      margin-bottom: 6px;
+    }
+    .proof-item span {
+      color: rgba(255,250,241,.7);
+      font-size: 13px;
+      line-height: 1.5;
+    }
     .hero-actions {
       display: flex;
-      gap: 12px;
       flex-wrap: wrap;
-      margin-top: 26px;
+      gap: 10px;
+      margin-top: 34px;
+      position: relative;
+      z-index: 1;
     }
-
     .btn {
-      border: 1px solid var(--ink);
-      background: var(--ink);
-      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 46px;
+      padding: 0 18px;
       border-radius: 999px;
-      padding: 11px 18px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 20px rgba(17, 19, 24, 0.12);
-    }
-
-    .btn.secondary {
-      background: #fff;
+      text-decoration: none;
+      font-weight: 800;
+      border: 1px solid rgba(255,255,255,.22);
+      background: #fffaf1;
       color: var(--ink);
     }
-
-    .hero-panel {
-      background: #f7f7fa;
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 18px;
-      min-height: 330px;
+    .btn.secondary { background: transparent; color: #fffaf1; }
+    .hero-side {
+      padding: 28px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-    }
-
-    .quick-title {
-      display: flex;
       justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      font-size: 18px;
+      background: #fffdf8;
     }
-
-    .quick-title span {
-      color: var(--muted);
-      font-weight: 600;
+    .side-title {
       font-size: 13px;
+      color: var(--clay);
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
     }
-
-    .flow-list {
+    .side-flow {
       display: grid;
       gap: 10px;
-      margin: 2px 0 0;
-      padding: 0;
-      list-style: none;
     }
-
-    .flow-list li {
+    .side-step {
       display: grid;
-      grid-template-columns: 30px 1fr;
-      gap: 10px;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 12px;
       align-items: start;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 12px;
-    }
-
-    .num {
-      width: 28px;
-      height: 28px;
-      border-radius: 9px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      background: var(--ink);
-      font-weight: 800;
-      font-size: 13px;
-    }
-
-    .flow-list strong {
-      display: block;
-      font-size: 15px;
-      margin-bottom: 2px;
-    }
-
-    .flow-list p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .section {
-      margin-top: 26px;
-      background: var(--surface);
-      border: 1px solid rgba(225, 228, 234, 0.8);
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 10px 30px rgba(17, 19, 24, 0.05);
-    }
-
-    .section-head {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .section h2 {
-      margin: 0;
-      font-size: 28px;
-      line-height: 1.2;
-      letter-spacing: 0;
-    }
-
-    .section-desc {
-      margin: 8px 0 0;
-      color: var(--muted);
-      max-width: 700px;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 999px;
-      padding: 7px 12px;
-      background: var(--soft);
-      color: #454b56;
-      font-size: 13px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .role-grid {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .role-tab {
-      min-height: 76px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: #fff;
-      padding: 12px 10px;
-      text-align: left;
-      cursor: pointer;
-      transition: border 160ms ease, background 160ms ease, transform 160ms ease;
-    }
-
-    .role-tab:hover {
-      transform: translateY(-1px);
-      border-color: #c8ccd6;
-    }
-
-    .role-tab.active {
-      border-color: var(--primary);
-      background: var(--primary-soft);
-    }
-
-    .role-tab strong {
-      display: block;
-      font-size: 15px;
-      margin-bottom: 4px;
-    }
-
-    .role-tab span {
-      display: block;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .role-detail {
-      display: grid;
-      grid-template-columns: 0.8fr 1.2fr;
-      gap: 18px;
-    }
-
-    .persona-card {
-      border-radius: 20px;
-      background: #fbfbfc;
-      border: 1px solid var(--line);
-      padding: 20px;
-    }
-
-    .persona-title {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .persona-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      border: 2px solid var(--ink);
-      position: relative;
-      background: #fff;
-      flex: 0 0 auto;
-    }
-
-    .persona-icon::before,
-    .persona-icon::after {
-      content: "";
-      position: absolute;
-      background: var(--ink);
-    }
-
-    .persona-icon.user::before {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      left: 13px;
-      top: 8px;
-    }
-
-    .persona-icon.user::after {
-      width: 22px;
-      height: 10px;
-      border-radius: 10px 10px 3px 3px;
-      left: 8px;
-      bottom: 8px;
-    }
-
-    .persona-icon.brush::before {
-      width: 5px;
-      height: 24px;
-      border-radius: 999px;
-      left: 18px;
-      top: 8px;
-      transform: rotate(30deg);
-    }
-
-    .persona-icon.brush::after {
-      width: 16px;
-      height: 8px;
-      border-radius: 9px;
-      left: 8px;
-      bottom: 8px;
-      transform: rotate(30deg);
-    }
-
-    .persona-icon.board::before {
-      width: 24px;
-      height: 4px;
-      left: 8px;
-      top: 11px;
-      box-shadow: 0 8px 0 var(--ink), 0 16px 0 var(--ink);
-    }
-
-    .persona-icon.board::after {
-      display: none;
-    }
-
-    .persona-title h3 {
-      margin: 0;
-      font-size: 24px;
-      line-height: 1.15;
-    }
-
-    .persona-title p {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .metric-row {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .metric {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 13px;
-    }
-
-    .metric b {
-      display: block;
-      font-size: 22px;
-      line-height: 1.1;
-    }
-
-    .metric span {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .journey {
-      border-radius: 20px;
-      border: 1px solid var(--line);
-      overflow: hidden;
-      background: #fff;
-    }
-
-    .journey-step {
-      display: grid;
-      grid-template-columns: 120px 1fr 1fr;
-      gap: 16px;
-      padding: 16px 18px;
-      border-bottom: 1px solid var(--line);
-      align-items: start;
-    }
-
-    .journey-step:last-child {
-      border-bottom: 0;
-    }
-
-    .time {
-      display: inline-flex;
-      width: fit-content;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: var(--soft);
-      color: #4f5662;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .journey-step h4 {
-      margin: 2px 0 5px;
-      font-size: 16px;
-    }
-
-    .journey-step p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .value-tag {
-      background: var(--green-soft);
-      color: var(--green);
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    .timeline {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .phase {
-      position: relative;
+      padding: 14px;
       border: 1px solid var(--line);
       border-radius: 18px;
-      padding: 16px;
-      background: #fff;
-      min-height: 180px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      background: var(--soft);
     }
-
-    .phase small {
-      width: fit-content;
-      display: inline-flex;
-      border-radius: 999px;
-      padding: 5px 9px;
-      background: var(--blue-soft);
-      color: var(--blue);
-      font-weight: 800;
-      font-size: 12px;
-    }
-
-    .phase h3 {
-      margin: 0;
-      font-size: 18px;
-      line-height: 1.2;
-    }
-
-    .phase p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .phase b {
-      margin-top: auto;
-      display: block;
-      font-size: 13px;
-      color: var(--ink);
-    }
-
-    .journey-nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .journey-btn {
-      border: 1px solid var(--line);
-      background: #fff;
-      border-radius: 999px;
-      padding: 9px 13px;
-      cursor: pointer;
-      color: #3e4450;
-      font-weight: 700;
-    }
-
-    .journey-btn.active {
+    .side-step span {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
       background: var(--ink);
-      color: #fff;
-      border-color: var(--ink);
+      color: #fffaf1;
+      font-size: 12px;
+      font-weight: 900;
     }
-
-    .flow-board {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+    .side-step strong { display: block; margin-bottom: 4px; }
+    .side-step small { color: var(--muted); line-height: 1.45; }
+    .section {
+      padding: 34px;
+      margin-top: 20px;
+      background: rgba(255,255,255,.72);
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
       gap: 18px;
-      align-items: stretch;
+      align-items: flex-end;
+      margin-bottom: 24px;
     }
-
-    .flow-card {
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 20px;
-      background: #fff;
-    }
-
-    .flow-card h3 {
-      margin: 0 0 8px;
-      font-size: 22px;
-    }
-
-    .flow-card .summary {
-      color: var(--muted);
-      margin: 0 0 16px;
-    }
-
-    .steps {
-      display: grid;
-      gap: 10px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .steps li {
-      display: grid;
-      grid-template-columns: 28px 1fr;
-      gap: 10px;
-      align-items: start;
-      padding: 10px;
-      border-radius: 13px;
-      background: #f8f9fb;
-    }
-
-    .mini-index {
-      width: 26px;
-      height: 26px;
-      border-radius: 9px;
-      background: var(--primary-soft);
-      color: var(--primary);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    .kicker {
+      color: var(--clay);
       font-weight: 900;
       font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
     }
-
-    .steps strong {
-      display: block;
-      font-size: 15px;
-    }
-
-    .steps span {
-      display: block;
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 1px;
-    }
-
-    .impact-card {
-      background: #fbfbfc;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .impact-row {
-      display: grid;
-      grid-template-columns: 110px 1fr;
-      gap: 12px;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 12px;
-    }
-
-    .impact-row:last-child {
-      border-bottom: 0;
-      padding-bottom: 0;
-    }
-
-    .impact-row b {
-      color: #353b46;
-    }
-
-    .impact-row p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .value-grid {
+    h2 { margin: 0; font-size: clamp(28px, 4vw, 44px); letter-spacing: 0; }
+    .section-head p { margin: 10px 0 0; color: var(--muted); max-width: 720px; line-height: 1.72; }
+    .audience-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
     }
-
-    .value-card {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 18px;
+    .audience-card {
+      padding: 24px;
+      box-shadow: none;
       background: #fff;
+      min-height: 210px;
+      position: relative;
+      overflow: hidden;
     }
-
-    .value-card h3 {
-      margin: 0 0 8px;
-      font-size: 19px;
+    .audience-card:after {
+      content: "";
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: var(--clay-soft);
+      position: absolute;
+      right: -28px;
+      top: -24px;
     }
-
-    .value-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
+    .audience-card h3 { margin: 18px 0 10px; font-size: 22px; }
+    .audience-card p { color: var(--muted); line-height: 1.7; margin: 0; }
+    .mini-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      position: relative;
     }
-
-    .status {
+    .mini-icon:before, .mini-icon:after {
+      content: "";
+      position: absolute;
+      background: var(--ink);
+    }
+    .mini-icon.person:before { width: 14px; height: 14px; border-radius: 50%; left: 16px; top: 10px; }
+    .mini-icon.person:after { width: 24px; height: 12px; border-radius: 12px 12px 0 0; left: 11px; bottom: 10px; }
+    .mini-icon.chart:before { width: 5px; height: 18px; left: 12px; bottom: 12px; }
+    .mini-icon.chart:after { width: 20px; height: 5px; left: 19px; bottom: 20px; transform: rotate(-28deg); }
+    .mini-icon.customer:before { width: 22px; height: 16px; border-radius: 12px; left: 12px; top: 12px; }
+    .mini-icon.customer:after { width: 26px; height: 4px; left: 10px; bottom: 12px; }
+    .route {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      counter-reset: route;
+    }
+    .route-item {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: #fff;
+      min-height: 168px;
+      position: relative;
+    }
+    .route-item:before {
+      counter-increment: route;
+      content: "0" counter(route);
+      display: inline-flex;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      background: var(--ink);
+      color: #fffaf1;
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+    .route-item strong { display: block; margin-bottom: 8px; font-size: 18px; }
+    .route-item span { color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .decision-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .decision-card {
+      padding: 20px;
+      background: #fff;
+      box-shadow: none;
+    }
+    .decision-card b { display: block; font-size: 30px; margin-bottom: 8px; }
+    .decision-card span { color: var(--muted); line-height: 1.6; }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .filter {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      height: 38px;
+      padding: 0 14px;
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .filter.active {
+      background: var(--ink);
+      color: #fffaf1;
+      border-color: var(--ink);
+    }
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .flow-card {
+      padding: 22px;
+      box-shadow: none;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 380px;
+    }
+    .flow-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .flow-id {
+      width: 48px;
+      height: 36px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fffaf1;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-      color: var(--orange);
-      background: var(--orange-soft);
+      justify-content: center;
+      font-weight: 900;
+      font-size: 13px;
+    }
+    .badge {
+      padding: 6px 10px;
       border-radius: 999px;
-      padding: 5px 10px;
+      background: var(--clay-soft);
+      color: #7d3c25;
       font-weight: 800;
       font-size: 12px;
+      white-space: nowrap;
     }
-
-    .status::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: currentColor;
+    .flow-card h3 { margin: 0 0 10px; font-size: 20px; }
+    .flow-card p { color: var(--muted); margin: 0 0 16px; line-height: 1.65; }
+    .mini-path {
+      display: grid;
+      gap: 10px;
+      margin: 4px 0 16px;
     }
-
-    .footer-note {
-      text-align: center;
+    .mini-path div {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      background: var(--soft);
+    }
+    .mini-path span {
+      display: block;
+      color: var(--clay);
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 5px;
+    }
+    .mini-path strong {
+      display: block;
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .flow-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+    }
+    .flow-meta span {
+      display: inline-flex;
+      min-height: 30px;
+      align-items: center;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .card-link {
+      display: inline-flex;
+      margin-top: 18px;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 900;
+      border-bottom: 2px solid var(--clay);
+      width: max-content;
+    }
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .schedule-table th, .schedule-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 13px 12px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+    .schedule-table th {
+      background: var(--soft);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .schedule-table tr:last-child td { border-bottom: 0; }
+    .note {
       color: var(--muted);
       font-size: 13px;
-      margin-top: 24px;
+      line-height: 1.7;
+      margin-top: 14px;
     }
-
-    @media (max-width: 980px) {
-      .hero,
-      .role-detail,
-      .flow-board {
-        grid-template-columns: 1fr;
-      }
-
-      .role-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .timeline,
-      .value-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .journey-step {
-        grid-template-columns: 100px 1fr;
-      }
-
-      .journey-step .value-tag {
-        grid-column: 2;
-      }
+    @media (max-width: 900px) {
+      .hero, .route, .flow-grid, .audience-grid, .decision-strip, .hero-proof { grid-template-columns: 1fr; }
+      .nav { display: none; }
+      .hero-main { padding: 26px; }
+      .section { padding: 20px; }
     }
-
-    @media (max-width: 640px) {
-      .page {
-        width: min(100% - 24px, 1180px);
-        padding-top: 16px;
-      }
-
-      .topbar {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .hero,
-      .section {
-        padding: 20px;
-        border-radius: 22px;
-      }
-
-      .role-grid,
-      .timeline,
-      .value-grid,
-      .metric-row {
-        grid-template-columns: 1fr;
-      }
-
-      .journey-step,
-      .impact-row {
-        grid-template-columns: 1fr;
-      }
-    }
-
     @media print {
-      body {
-        background: #fff;
-      }
-
-      .page {
-        width: 100%;
-        padding: 0;
-      }
-
-      .btn,
-      .journey-nav,
-      .role-grid {
-        display: none;
-      }
-
-      .hero,
-      .section {
-        box-shadow: none;
-        break-inside: avoid;
-      }
+      .topbar, .filters, .hero-actions { display: none; }
+      body { background: #fff; }
+      .hero-main, .hero-side, .section, .flow-card { box-shadow: none; }
     }
   </style>
 </head>
 <body>
-  <main class="page">
-    <header class="topbar">
-      <div class="brand">
-        <span class="logo-mark" aria-hidden="true"></span>
-        <span>BeautyOPC 一期项目速览</span>
-      </div>
-      <div class="meta">需求方汇报版 · 用户视角 · 2026.05.20</div>
-    </header>
-
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><span class="mark"></span><span>BeautyOPC 一期交付包</span></div>
+      <nav class="nav">
+        <a href="#overview">项目是什么</a>
+        <a href="#users">给谁做</a>
+        <a href="#journey">主流程</a>
+        <a href="#flows">选择流程</a>
+        <a href="#dev">开发资料</a>
+      </nav>
+    </div>
+  </header>
+  <main>
     <section class="hero" id="overview">
-      <div>
-        <div class="eyebrow"><span class="dot"></span>30 秒先看懂</div>
-        <h1>让美业个人从会手艺，走向会经营</h1>
-        <p class="lead">
-          一期先跑通 BeautyOPC 的基础经营闭环：用户入驻平台，用 AI 生产内容，通过接单或选品获得赚钱机会，并能看到自己的收益与经营结果。妆造私教作为首个样板行业，验证平台深入真实业务的能力。
-        </p>
+      <div class="hero-main">
+        <div>
+          <span class="eyebrow">BeautyOPC Phase 1</span>
+          <h1>让美业超级个体从会做服务，变成会经营自己。</h1>
+          <p>BeautyOPC 一期要先跑通一个看得见的经营闭环：美业从业者进入平台，使用 AI 提升内容生产效率，通过选品分销和妆造私教样板产生收入，并让老板和平台运营能够管理团队、订单、客户和结果。</p>
+          <div class="hero-proof">
+            <div class="proof-item"><b>20</b><span>条业务流程，可由业务方逐条选择是否进入一期。</span></div>
+            <div class="proof-item"><b>12</b><span>P0建议流程，覆盖底座、变现和妆造样板。</span></div>
+            <div class="proof-item"><b>3端</b><span>OPC小程序、BeautyClaw/Cosark联动、桌面运营后台。</span></div>
+          </div>
+        </div>
         <div class="hero-actions">
-          <button class="btn" data-scroll="#roles">按用户角色查看</button>
-          <button class="btn secondary" data-scroll="#timeline">查看 12 周计划</button>
+          <a class="btn" href="#flows">选择要先开发的流程</a>
+          <a class="btn secondary" href="https://www.figma.com/design/wFw5s743SaCaJu3JdTDxWp/BeautyOPC?node-id=1-857">打开 Figma 原型</a>
         </div>
       </div>
-      <aside class="hero-panel" aria-label="一期闭环">
-        <div class="quick-title">一期核心闭环 <span>从进入到产生收益</span></div>
-        <ul class="flow-list">
-          <li>
-            <span class="num">1</span>
-            <div><strong>加入平台</strong><p>微信登录、提交 OPC 入驻资料、后台审核通过。</p></div>
-          </li>
-          <li>
-            <span class="num">2</span>
-            <div><strong>提升经营能力</strong><p>进入 AIGC 模块，生成内容、脚本、推广素材并沉淀素材。</p></div>
-          </li>
-          <li>
-            <span class="num">3</span>
-            <div><strong>获得赚钱机会</strong><p>通过接单广场报名任务，或通过选品中心推广商品。</p></div>
-          </li>
-          <li>
-            <span class="num">4</span>
-            <div><strong>经营客户与复盘</strong><p>妆造样板行业跑通预约、报告、总结、推荐和收益归因。</p></div>
-          </li>
-        </ul>
+      <aside class="hero-side">
+        <div>
+          <div class="side-title">一眼看懂主闭环</div>
+          <div class="side-flow">
+            <div class="side-step"><span>01</span><div><strong>进入平台</strong><small>注册、账号互通、通知和基础设置。</small></div></div>
+            <div class="side-step"><span>02</span><div><strong>使用AI</strong><small>AIGC 已有能力补齐算力充值和账本。</small></div></div>
+            <div class="side-step"><span>03</span><div><strong>经营变现</strong><small>选品、分销卡片、订单和佣金回看。</small></div></div>
+            <div class="side-step"><span>04</span><div><strong>妆造样板</strong><small>约课、问卷、面诊、上课、小结和推荐。</small></div></div>
+            <div class="side-step"><span>05</span><div><strong>后台兜底</strong><small>平台运营能审核、配置、通知和处理异常。</small></div></div>
+          </div>
+        </div>
       </aside>
     </section>
 
-    <section class="section" id="roles">
+    <section class="section" id="users">
       <div class="section-head">
         <div>
-          <h2>按用户角色快速理解</h2>
-          <p class="section-desc">需求方不需要先读功能清单，只要选择一个角色，就能看到这个角色在一期里什么时候进入、做什么、解决什么问题。</p>
+          <div class="kicker">Who it serves</div>
+          <h2>这不是单个工具，而是给三类人完成经营闭环。</h2>
+          <p>需求方最需要判断的是：哪些角色的价值必须先兑现。下面三类用户决定了一期的优先级。</p>
         </div>
-        <span class="pill">可点击切换</span>
       </div>
-
-      <div class="role-grid" role="tablist" aria-label="用户角色">
-        <button class="role-tab active" role="tab" data-role="opc"><strong>美业个人</strong><span>入驻、创作、接单、选品</span></button>
-        <button class="role-tab" role="tab" data-role="teacher"><strong>妆造师</strong><span>课程、客户、报告、推荐</span></button>
-        <button class="role-tab" role="tab" data-role="boss"><strong>团队老板</strong><span>老师、客户、团队经营</span></button>
-        <button class="role-tab" role="tab" data-role="client"><strong>客户</strong><span>预约、问卷、面诊、总结</span></button>
-        <button class="role-tab" role="tab" data-role="brand"><strong>品牌/商家</strong><span>任务、商品、内容分发</span></button>
-        <button class="role-tab" role="tab" data-role="operator"><strong>平台运营</strong><span>审核、任务、通知、数据</span></button>
-      </div>
-
-      <div class="role-detail">
-        <article class="persona-card">
-          <div class="persona-title">
-            <span class="persona-icon user" id="roleIcon" aria-hidden="true"></span>
-            <div>
-              <h3 id="roleName">美业个人</h3>
-              <p id="roleCaption">从“想开始”到“能经营”的第一批 OPC 用户</p>
-            </div>
-          </div>
-          <div class="impact-row">
-            <b>当前痛点</b>
-            <p id="rolePain">有手艺和审美，但缺少内容、订单、商品和经营方法。</p>
-          </div>
-          <div class="impact-row">
-            <b>一期价值</b>
-            <p id="roleValue">入驻后可以用 AIGC 生成内容，通过接单广场找任务，通过选品中心获得商品分销收益。</p>
-          </div>
-          <div class="metric-row">
-            <div class="metric"><b id="roleMetricA">第 1 周</b><span id="roleMetricALabel">可确认入驻链路</span></div>
-            <div class="metric"><b id="roleMetricB">第 6 周</b><span id="roleMetricBLabel">可体验接单和选品</span></div>
-          </div>
-        </article>
-
-        <article class="journey" id="roleJourney" aria-label="角色旅程"></article>
+      <div class="audience-grid">
+        <article class="audience-card"><div class="mini-icon person"></div><h3>美业超级个体 / 妆教师</h3><p>需要更快生成内容、获得商品机会、管理客户和课程，并知道自己的经营结果。</p></article>
+        <article class="audience-card"><div class="mini-icon chart"></div><h3>团队老板 / 机构管理者</h3><p>需要看到团队销售、客户归属、老师状态、模板标准和佣金数据，并处理人员变化。</p></article>
+        <article class="audience-card"><div class="mini-icon customer"></div><h3>C端客户 / 学员</h3><p>需要顺畅完成约课、课前问卷、面诊报告、课程回顾和产品购买，而不是被多个系统打断。</p></article>
       </div>
     </section>
 
-    <section class="section" id="flows">
+    <section class="section" id="journey">
       <div class="section-head">
         <div>
-          <h2>用 6 条用户流程讲清一期</h2>
-          <p class="section-desc">每条流程都不是“做一个功能”，而是让用户完成一个有价值的经营动作。</p>
+          <div class="kicker">Main journey</div>
+          <h2>用户从哪里开始，最后得到什么结果？</h2>
+          <p>一期不是按页面堆功能，而是按经营路径交付结果。每一段都可以独立选择开发，也可以组合成完整试点闭环。</p>
         </div>
-        <span class="pill">点击查看细节</span>
       </div>
-
-      <div class="journey-nav" role="tablist" aria-label="核心流程">
-        <button class="journey-btn active" data-flow="onboard">入驻认证</button>
-        <button class="journey-btn" data-flow="ai">AIGC 创作</button>
-        <button class="journey-btn" data-flow="task">接单广场</button>
-        <button class="journey-btn" data-flow="shop">选品分销</button>
-        <button class="journey-btn" data-flow="course">妆造课程</button>
-        <button class="journey-btn" data-flow="team">老板管理</button>
-      </div>
-
-      <div class="flow-board">
-        <article class="flow-card">
-          <span class="status" id="flowStatus">一期 P0</span>
-          <h3 id="flowTitle">入驻认证：让用户正式成为 OPC</h3>
-          <p class="summary" id="flowSummary">用户提交资料，平台审核通过后，获得接单、AIGC、选品和运营能力。</p>
-          <ul class="steps" id="flowSteps"></ul>
-        </article>
-
-        <article class="impact-card">
-          <div class="impact-row">
-            <b>用户问题</b>
-            <p id="flowProblem">不知道如何开始，不清楚平台是否认可自己，也无法看到审核状态。</p>
-          </div>
-          <div class="impact-row">
-            <b>用户价值</b>
-            <p id="flowUserValue">用户知道自己现在处于哪一步，通过审核后可以正式使用平台能力。</p>
-          </div>
-          <div class="impact-row">
-            <b>客户价值</b>
-            <p id="flowBusinessValue">平台开始沉淀真实 OPC 用户资产，为任务、商品、课程和收益归因建立身份基础。</p>
-          </div>
-          <div class="impact-row">
-            <b>验收结果</b>
-            <p id="flowCheck">用户能提交入驻，后台能审核，用户端能看到通过或驳回原因。</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="timeline">
-      <div class="section-head">
-        <div>
-          <h2>12 周交付节奏</h2>
-          <p class="section-desc">每个阶段都对应需求方能实际看到的成果，避免只停留在研发进度描述。</p>
-        </div>
-        <span class="pill">8-10 周可压缩 · 12 周更稳</span>
-      </div>
-
-      <div class="timeline">
-        <article class="phase">
-          <small>第 1 周</small>
-          <h3>需求冻结</h3>
-          <p>确认流程、接口、字段、原型和验收口径。</p>
-          <b>需求方看到：开发边界清楚，不再边做边猜。</b>
-        </article>
-        <article class="phase">
-          <small>第 2-3 周</small>
-          <h3>平台基础</h3>
-          <p>登录、入驻、审核、通知、内容页和后台基础。</p>
-          <b>需求方看到：平台从静态页面进入可运营状态。</b>
-        </article>
-        <article class="phase">
-          <small>第 3-5 周</small>
-          <h3>AIGC 与算力</h3>
-          <p>AIGC 内容生成、算力充值、生成记录。</p>
-          <b>需求方看到：AIGC 能力进入真实业务流程。</b>
-        </article>
-        <article class="phase">
-          <small>第 4-6 周</small>
-          <h3>接单广场</h3>
-          <p>任务发布、任务详情、报名接单和任务状态。</p>
-          <b>需求方看到：平台开始承接商业机会。</b>
-        </article>
-        <article class="phase">
-          <small>第 5-7 周</small>
-          <h3>选品分销</h3>
-          <p>商品入口、推广归因、分销订单和收益展示。</p>
-          <b>需求方看到：用户拥有商品变现路径。</b>
-        </article>
-        <article class="phase">
-          <small>第 6-12 周</small>
-          <h3>妆造样板与验收</h3>
-          <p>预约、问卷、面诊、报告、总结、推荐、团队管理和联调。</p>
-          <b>需求方看到：有可演示、可试点的行业闭环。</b>
-        </article>
+      <div class="route">
+        <div class="route-item"><strong>平台进入</strong><span>用户完成账号互通、通知接收和基础设置，平台具备运营用户的入口。</span></div>
+        <div class="route-item"><strong>AI创作</strong><span>AIGC 已开发，本期补齐算力充值、扣减、返还和消费明细。</span></div>
+        <div class="route-item"><strong>经营变现</strong><span>用户从选品中心生成分销卡片，成交在Cosark完成，结果回到OPC。</span></div>
+        <div class="route-item"><strong>妆造样板</strong><span>妆教师完成课程、预约、问卷、面诊、上课、小结和产品推荐。</span></div>
+        <div class="route-item"><strong>后台支撑</strong><span>平台和老板能审核、管理老师、处理异常、查看销售和客户归属。</span></div>
       </div>
     </section>
 
     <section class="section">
       <div class="section-head">
         <div>
-          <h2>一期真正交付的业务价值</h2>
-          <p class="section-desc">判断一期是否成功，不是看页面数量，而是看平台是否具备可试点、可运营、可扩展的基础。</p>
+          <div class="kicker">How to decide</div>
+          <h2>业务方不是一次全选，而是逐条判断优先级。</h2>
+          <p>当前页面给出产品建议，但最终决定权在业务方。每条流程都可以单独打开，看它的入口、步骤、结果、周期和开发文件。</p>
         </div>
       </div>
-
-      <div class="value-grid">
-        <article class="value-card">
-          <h3>用户能开始经营</h3>
-          <p>从注册入驻到审核通过，平台开始沉淀美业超级个体，而不是只展示概念。</p>
-        </article>
-        <article class="value-card">
-          <h3>AIGC 有真实使用场景</h3>
-          <p>AIGC 创作、算力充值、生成记录和素材沉淀形成工具商业化基础。</p>
-        </article>
-        <article class="value-card">
-          <h3>平台有赚钱机会</h3>
-          <p>接单广场和选品分销让用户看到任务收益和商品佣金，提升留存动机。</p>
-        </article>
-        <article class="value-card">
-          <h3>妆造业务能闭环</h3>
-          <p>课程预约、课前报告、课堂总结和产品推荐证明平台能深入垂类场景。</p>
-        </article>
-        <article class="value-card">
-          <h3>老板有管理理由</h3>
-          <p>团队数据、老师管理、客户继承和统一模板让产品从个人工具升级为团队工具。</p>
-        </article>
-        <article class="value-card">
-          <h3>后台能支撑运营</h3>
-          <p>审核、任务、通知、AIGC 算力、分销和妆造业务都有后台支撑，产品可进入试点。</p>
-        </article>
+      <div class="decision-strip">
+        <div class="decision-card"><b>进入一期</b><span>直接进入开发评估和排期。</span></div>
+        <div class="decision-card"><b>只做占位</b><span>保留业务入口，不承诺完整闭环。</span></div>
+        <div class="decision-card"><b>后置二期</b><span>不影响一期主闭环，等试点反馈后推进。</span></div>
+        <div class="decision-card"><b>暂不开发</b><span>从范围中移除，避免干扰交付。</span></div>
       </div>
     </section>
 
-    <p class="footer-note">建议汇报方式：先讲 30 秒结论，再按需求方最关心的角色切换展示，最后落到 12 周交付节奏和一期验收标准。</p>
-  </main>
-
-  <script>
-    const roles = {
-      opc: {
-        name: "美业个人",
-        caption: "从“想开始”到“能经营”的第一批 OPC 用户",
-        icon: "user",
-        pain: "有手艺和审美，但缺少内容、订单、商品和经营方法。",
-        value: "入驻后可以用 AIGC 生成内容，通过接单广场找任务，通过选品中心获得商品分销收益。",
-        metricA: "第 1 周",
-        metricALabel: "可确认入驻链路",
-        metricB: "第 6 周",
-        metricBLabel: "可体验接单和选品",
-        journey: [
-          ["进入平台", "了解 OPC 权益并提交入驻资料。", "把“想加入”变成可审核、可追踪的动作。"],
-          ["通过审核", "获得 OPC 身份，进入 AIGC、接单和选品能力。", "用户知道自己已经具备平台经营资格。"],
-          ["开始赚钱", "报名任务或推广商品，查看任务状态和收益。", "从看平台变成用平台经营。"]
-        ]
-      },
-      teacher: {
-        name: "妆造师",
-        caption: "一期样板行业的核心使用者",
-        icon: "brush",
-        pain: "课程咨询、预约、客户信息、课后总结和产品推荐都依赖人工处理。",
-        value: "可以用工作台完成课程转发、预约管理、课前报告、课堂总结和产品推荐。",
-        metricA: "第 6 周",
-        metricALabel: "进入样板业务开发",
-        metricB: "第 10 周",
-        metricBLabel: "完成完整课程闭环",
-        journey: [
-          ["发送课程", "从工作台选择课程并转发给客户。", "咨询转化不再只靠口头沟通。"],
-          ["课前准备", "客户提交问卷和素颜面诊后，老师提前看到专业报告。", "到店前已经形成个性化课程方案。"],
-          ["课后转化", "生成课程总结和产品推荐，确认后发送给客户。", "服务结束后继续产生复购和商品收益。"]
-        ]
-      },
-      boss: {
-        name: "团队老板",
-        caption: "需要经营团队、老师、客户和佣金的人",
-        icon: "board",
-        pain: "团队销售、客户归属、老师管理和离职交接不清晰。",
-        value: "老板拥有妆造师全部能力，并额外管理团队经营、老师、客户继承和统一模板。",
-        metricA: "第 8 周",
-        metricALabel: "团队管理可见",
-        metricB: "第 10 周",
-        metricBLabel: "经营闭环可试点",
-        journey: [
-          ["看团队", "查看今天课程、团队销售、老师表现和分销数据。", "老板能快速判断团队经营状态。"],
-          ["管老师", "邀请、新增、修改、解绑妆造师。", "团队扩张和人员变动有管理入口。"],
-          ["管客户", "查看客户绑定老师，必要时把客户继承给其他老师。", "客户资产不会因为老师变动而流失。"]
-        ]
-      },
-      client: {
-        name: "客户",
-        caption: "从咨询到上课再到复购的服务对象",
-        icon: "user",
-        pain: "预约要反复沟通，课前需求不清楚，上完课容易忘记重点。",
-        value: "客户可以在线预约、填写问卷、上传素颜照、查看报告、课程总结和产品推荐。",
-        metricA: "第 7 周",
-        metricALabel: "预约流程可用",
-        metricB: "第 10 周",
-        metricBLabel: "课前课后闭环可用",
-        journey: [
-          ["预约课程", "点击老师转发的课程链接，选择老师、课程和时间。", "减少来回沟通，提高预约效率。"],
-          ["完成课前准备", "提交问卷并上传素颜照生成面诊报告。", "课程更贴合自己的五官和风格。"],
-          ["课后复习", "收到课程总结和适合自己的产品推荐。", "学习内容可回顾，购买路径更清晰。"]
-        ]
-      },
-      brand: {
-        name: "品牌/商家",
-        caption: "希望通过美业个体完成内容分发和销售转化",
-        icon: "board",
-        pain: "达人投放成本高，长尾内容分发不足，商品推广缺少场景。",
-        value: "可以通过任务和选品连接 OPC 用户，在服务、内容和私域场景中获得曝光与成交。",
-        metricA: "第 4 周",
-        metricALabel: "任务可后台发布",
-        metricB: "第 7 周",
-        metricBLabel: "商品推广可归因",
-        journey: [
-          ["发布任务", "平台后台代发种草、测评、妆造、内容任务。", "品牌获得更低门槛的内容供给。"],
-          ["商品进入选品", "商品展示给 OPC 用户并标明佣金。", "用户知道卖什么、为什么推荐。"],
-          ["成交归因", "客户购买后，商城产生分销订单。", "品牌能看到商品推广带来的转化。"]
-        ]
-      },
-      operator: {
-        name: "平台运营",
-        caption: "让 BeautyOPC 从页面变成可运营平台的人",
-        icon: "board",
-        pain: "没有后台就无法审核用户、发布任务、推送通知和查看业务数据。",
-        value: "桌面后台支撑审核、任务、通知、AIGC 内容与算力、分销和妆造样板业务管理。",
-        metricA: "第 3 周",
-        metricALabel: "后台基础可用",
-        metricB: "第 12 周",
-        metricBLabel: "全链路可验收",
-        journey: [
-          ["管用户", "审核 OPC 入驻资料，处理通过和驳回。", "平台供给质量可控。"],
-          ["管业务", "发布任务、通知、内容，查看 AIGC 算力和分销数据。", "平台可以真实运营。"],
-          ["管样板", "管理妆造课程、预约、老师和客户数据。", "样板行业可以小范围试点。"]
-        ]
-      }
-    };
-
-    const flows = {
-      onboard: {
-        status: "一期 P0",
-        title: "入驻认证：让用户正式成为 OPC",
-        summary: "用户提交资料，平台审核通过后，获得接单、AIGC、选品和运营能力。",
-        steps: [
-          ["进入小程序", "查看平台说明和 OPC 权益。"],
-          ["提交资料", "填写行业方向、技能标签、城市、作品或资质。"],
-          ["后台审核", "平台通过或驳回，并给出原因。"],
-          ["获得身份", "通过后开放接单、AIGC、选品等能力。"]
-        ],
-        problem: "不知道如何开始，不清楚平台是否认可自己，也无法看到审核状态。",
-        userValue: "用户知道自己现在处于哪一步，通过审核后可以正式使用平台能力。",
-        businessValue: "平台开始沉淀真实 OPC 用户资产，为任务、商品、课程和收益归因建立身份基础。",
-        check: "用户能提交入驻，后台能审核，用户端能看到通过或驳回原因。"
-      },
-      ai: {
-        status: "一期 P0",
-        title: "AIGC 创作：把能力包装成内容资产",
-        summary: "用户通过 BeautyOPC 进入 AIGC 模块，生成图文、图片、视频和营销素材。",
-        steps: [
-          ["选择工具", "从 AIGC 入口进入内容生成能力。"],
-          ["生成内容", "创建图文、图片、视频或混剪任务。"],
-          ["消耗算力", "记录本次使用和扣减结果。"],
-          ["沉淀素材", "生成结果进入记录或素材库。"]
-        ],
-        problem: "不会写文案、不会做素材、内容生产效率低，生成过的内容无法复用。",
-        userValue: "用户可以更快生产内容，把服务能力和商品卖点表达出来。",
-        businessValue: "AIGC 能力有真实使用场景，算力充值和素材沉淀成为平台商业化基础。",
-        check: "用户可进入 AIGC 模块，生成内容后有算力消耗和生成记录；AI 测肤、AI 推品、AI 妆效不归入 AIGC。"
-      },
-      task: {
-        status: "一期 P0",
-        title: "接单广场：让平台提供真实任务机会",
-        summary: "平台后台发布任务，OPC 用户浏览、筛选、报名并查看任务状态。",
-        steps: [
-          ["发布任务", "运营后台代商家或品牌发布任务。"],
-          ["浏览任务", "用户按城市、类型、预算和时间筛选。"],
-          ["报名接单", "用户查看详情后报名。"],
-          ["状态跟进", "用户和后台都能看到任务进度。"]
-        ],
-        problem: "美业个人缺少稳定订单来源，不知道自己能接什么任务。",
-        userValue: "用户能在平台上找到可报名的任务机会，不再只靠自己找客户。",
-        businessValue: "平台从工具进入任务撮合，后续可承接品牌、门店和机构需求。",
-        check: "后台能发任务，用户能报名，后台能看报名人，用户能看任务状态。"
-      },
-      shop: {
-        status: "一期 P0",
-        title: "选品分销：让服务之外产生商品收入",
-        summary: "OPC 用户查看可推广商品，跳转商城成交后，在 OPC 查看分销订单和收益。",
-        steps: [
-          ["查看商品", "展示商品、价格、佣金和推荐理由。"],
-          ["选择推广", "根据客户或内容场景选择商品。"],
-          ["跳转商城", "带上 OPC 推广人身份进入商品详情。"],
-          ["查看收益", "成交后展示分销订单和佣金概览。"]
-        ],
-        problem: "用户不知道卖什么，也不知道成交后佣金在哪里看。",
-        userValue: "用户可以获得服务之外的商品收益，推荐产品更有依据。",
-        businessValue: "商城商品获得 OPC 分发渠道，平台具备商品变现路径。",
-        check: "商品能跳商城，推广人能归因，BeautyOPC 能展示订单或收益概览。"
-      },
-      course: {
-        status: "样板行业 P0",
-        title: "妆造课程：从咨询到课后复购的完整闭环",
-        summary: "妆造师转发课程，客户预约并完成课前问卷和面诊，课后收到总结和产品推荐。",
-        steps: [
-          ["发送课程", "妆造师从工作台选择课程链接转发客户。"],
-          ["完成预约", "客户选择老师、课程、时间和付款状态。"],
-          ["课前报告", "客户提交问卷和素颜照，生成双版本报告。"],
-          ["课后推荐", "老师确认课程总结和产品推荐后发送客户。"]
-        ],
-        problem: "课程咨询、预约、课前了解、课后总结和产品推荐全部依赖人工。",
-        userValue: "客户获得更专业的课程体验，妆造师提前准备并提高服务效率。",
-        businessValue: "妆造私教成为可演示、可试点的行业样板，带动课程和商品转化。",
-        check: "课程转发、预约、问卷、面诊、报告、总结和推荐链路能完整跑通。"
-      },
-      team: {
-        status: "样板行业 P0",
-        title: "老板管理：让团队经营和客户归属清晰",
-        summary: "老板查看团队经营数据，管理老师、客户继承和统一模板。",
-        steps: [
-          ["看团队", "查看课程、销售额、分销和任务情况。"],
-          ["管老师", "邀请、新增、修改、解绑妆造师。"],
-          ["管客户", "查看客户绑定老师，处理客户继承。"],
-          ["管模板", "统一维护团队问卷和服务标准。"]
-        ],
-        problem: "团队销售、客户归属、老师离职交接和服务标准容易混乱。",
-        userValue: "老板能把团队经营看清楚，妆造师只关注自己的客户和任务。",
-        businessValue: "产品从个人工具升级为团队经营工具，提升机构客户付费理由。",
-        check: "老板能看团队数据、管理老师、调整客户归属，妆造师只能看自己的数据。"
-      }
-    };
-
-    function renderRole(key) {
-      const role = roles[key];
-      document.getElementById("roleName").textContent = role.name;
-      document.getElementById("roleCaption").textContent = role.caption;
-      document.getElementById("rolePain").textContent = role.pain;
-      document.getElementById("roleValue").textContent = role.value;
-      document.getElementById("roleMetricA").textContent = role.metricA;
-      document.getElementById("roleMetricALabel").textContent = role.metricALabel;
-      document.getElementById("roleMetricB").textContent = role.metricB;
-      document.getElementById("roleMetricBLabel").textContent = role.metricBLabel;
-      const icon = document.getElementById("roleIcon");
-      icon.className = "persona-icon " + role.icon;
-
-      const journey = document.getElementById("roleJourney");
-      journey.innerHTML = role.journey.map((item, index) => `
-        <div class="journey-step">
-          <span class="time">第 ${index + 1} 步</span>
-          <div>
-            <h4>${item[0]}</h4>
-            <p>${item[1]}</p>
-          </div>
-          <div class="value-tag">${item[2]}</div>
+    <section class="section" id="flows">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Flow library</div>
+          <h2>20条流程，按业务闭环选择开发范围。</h2>
+          <p>点开每张卡片，可以看到该流程从哪里开始、经过哪些步骤、交付什么结果，以及开发团队需要看的模块和文件。</p>
         </div>
-      `).join("");
-    }
+      </div>
+      <div class="filters">
+        <button class="filter active" data-filter="all">全部</button>
+        <button class="filter" data-filter="妆造交付">妆造交付</button><button class="filter" data-filter="团队与后台">团队与后台</button><button class="filter" data-filter="平台底座">平台底座</button><button class="filter" data-filter="平台经营">平台经营</button>
+      </div>
+      <div class="flow-grid" id="flowGrid">
+        
+    <article class="flow-card" data-group="妆造交付" data-priority="P0建议">
+      <div class="flow-head">
+        <span class="flow-id">F01</span>
+        <span class="badge">建议P0</span>
+      </div>
+      <h3>课程发送与预约下单闭环</h3>
+      <p>让妆教师能从OPC选择课程链接转发给客户，客户完成选老师、选时间、已付款/未付款预约，老师和老板同步看到预约状态。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>妆教师在OPC课程设置中复制课程链接</strong></div>
+        <div><span>最后得到什么</span><strong>一次咨询变成可追踪的预约订单</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>妆教师 / 客户 / 老板</span>
+        <span>6-8人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F01.html">打开这条流程</a>
+    </article>
 
-    function renderFlow(key) {
-      const flow = flows[key];
-      document.getElementById("flowStatus").textContent = flow.status;
-      document.getElementById("flowTitle").textContent = flow.title;
-      document.getElementById("flowSummary").textContent = flow.summary;
-      document.getElementById("flowProblem").textContent = flow.problem;
-      document.getElementById("flowUserValue").textContent = flow.userValue;
-      document.getElementById("flowBusinessValue").textContent = flow.businessValue;
-      document.getElementById("flowCheck").textContent = flow.check;
-      document.getElementById("flowSteps").innerHTML = flow.steps.map((item, index) => `
-        <li>
-          <span class="mini-index">${index + 1}</span>
-          <div><strong>${item[0]}</strong><span>${item[1]}</span></div>
-        </li>
-      `).join("");
-    }
+    <article class="flow-card" data-group="妆造交付" data-priority="P0建议">
+      <div class="flow-head">
+        <span class="flow-id">F02</span>
+        <span class="badge">建议P0</span>
+      </div>
+      <h3>课程新增与修改闭环</h3>
+      <p>让妆教师维护自己的课程，老板可统一查看课程设置能力。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>妆教师进入课程设置</strong></div>
+        <div><span>最后得到什么</span><strong>课程可以被复制链接、预约和管理</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>妆教师 / 老板</span>
+        <span>5-7人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F02.html">打开这条流程</a>
+    </article>
 
-    document.querySelectorAll(".role-tab").forEach((tab) => {
-      tab.addEventListener("click", () => {
-        document.querySelectorAll(".role-tab").forEach((item) => item.classList.remove("active"));
-        tab.classList.add("active");
-        renderRole(tab.dataset.role);
+    <article class="flow-card" data-group="妆造交付" data-priority="P0建议">
+      <div class="flow-head">
+        <span class="flow-id">F03</span>
+        <span class="badge">建议P0</span>
+      </div>
+      <h3>课前问卷与素颜面诊报告闭环</h3>
+      <p>客户课前填写问卷并上传素颜照片，系统生成客户版和专业版报告，妆教师据此准备课程方案。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>客户预约成功后收到课前资料卡片</strong></div>
+        <div><span>最后得到什么</span><strong>客户到店前老师已完成个性化备课</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>客户 / 妆教师</span>
+        <span>8-12人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F03.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="妆造交付" data-priority="P0建议">
+      <div class="flow-head">
+        <span class="flow-id">F04</span>
+        <span class="badge">建议P0</span>
+      </div>
+      <h3>到店上课与课程小结发送闭环</h3>
+      <p>妆教师到店开始上课、记录课程重点、生成课程小结，并选择是否连同产品推荐一起发送。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>客户到店后妆教师点击开始上课</strong></div>
+        <div><span>最后得到什么</span><strong>客户获得可复习的课程资产，老师获得复购触点</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>妆教师 / 客户</span>
+        <span>8-10人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F04.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="团队与后台" data-priority="P0建议">
+      <div class="flow-head">
+        <span class="flow-id">F05</span>
+        <span class="badge">建议P0</span>
+      </div>
+      <h3>Cosark商城购买与订单佣金同步闭环</h3>
+      <p>OPC展示商品推荐，交易在Cosark完成，订单和佣金同步回OPC。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>客户从推荐卡片进入Cosark商城</strong></div>
+        <div><span>最后得到什么</span><strong>产品推荐产生可追踪的成交和佣金</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>客户 / 妆教师 / 老板</span>
+        <span>8-12人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F05.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="团队与后台" data-priority="P1建议">
+      <div class="flow-head">
+        <span class="flow-id">F06</span>
+        <span class="badge">建议P1</span>
+      </div>
+      <h3>BeautyClaw课程资产与专属妆教师绑定闭环</h3>
+      <p>客户课程资产在BeautyClaw管理，首次约课绑定专属妆教师，老板可处理离职继承。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>客户在BeautyClaw查看自己的课程资产</strong></div>
+        <div><span>最后得到什么</span><strong>客户资产、老师服务关系和佣金归属清晰</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>客户 / 妆教师 / 老板</span>
+        <span>6-9人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F06.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="妆造交付" data-priority="P1建议">
+      <div class="flow-head">
+        <span class="flow-id">F07</span>
+        <span class="badge">建议P1</span>
+      </div>
+      <h3>订单取消与改期闭环</h3>
+      <p>客户或妆教师可发起取消/改期，并通过审批确认结果。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>客户或妆教师从预约详情发起变更</strong></div>
+        <div><span>最后得到什么</span><strong>取消和改期有记录、有审批、有状态</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>客户 / 妆教师</span>
+        <span>5-7人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F07.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="团队与后台" data-priority="P0建议">
+      <div class="flow-head">
+        <span class="flow-id">F08</span>
+        <span class="badge">建议P0</span>
+      </div>
+      <h3>团队与妆教师管理闭环</h3>
+      <p>老板统一管理团队妆教师，包含邀请、新增、编辑权限、解绑、离职处理。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>老板进入团队老师管理</strong></div>
+        <div><span>最后得到什么</span><strong>团队成员、权限和客户承接可控</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>老板</span>
+        <span>6-9人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F08.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="团队与后台" data-priority="P1建议">
+      <div class="flow-head">
+        <span class="flow-id">F09</span>
+        <span class="badge">建议P1</span>
+      </div>
+      <h3>团队模板配置闭环</h3>
+      <p>老板统一维护问卷等模板，妆教师只读调用。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>老板进入团队模板配置</strong></div>
+        <div><span>最后得到什么</span><strong>团队服务口径统一，不依赖老师各自维护</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>老板 / 妆教师</span>
+        <span>5-7人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F09.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="妆造交付" data-priority="P1建议">
+      <div class="flow-head">
+        <span class="flow-id">F10</span>
+        <span class="badge">建议P1</span>
+      </div>
+      <h3>定时任务与自动触达闭环</h3>
+      <p>预约后自动生成课前/课后触达任务，并可人工确认或补发。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>客户预约成功后系统生成触达任务</strong></div>
+        <div><span>最后得到什么</span><strong>课前资料和课后复访不再靠人工记忆</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>妆教师 / 客户</span>
+        <span>5-8人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F10.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="妆造交付" data-priority="P2建议">
+      <div class="flow-head">
+        <span class="flow-id">F11</span>
+        <span class="badge">建议P2</span>
+      </div>
+      <h3>私域助手与客服托管闭环</h3>
+      <p>妆教师上课时可让AI辅助回复企微客户，并按关键词转人工。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>妆教师上课或忙碌时开启私域助手</strong></div>
+        <div><span>最后得到什么</span><strong>忙碌时仍能保持客户响应，不失控</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>妆教师</span>
+        <span>8-12人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F11.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="团队与后台" data-priority="P0建议">
+      <div class="flow-head">
+        <span class="flow-id">F12</span>
+        <span class="badge">建议P0</span>
+      </div>
+      <h3>桌面端运营后台支撑闭环</h3>
+      <p>支撑OPC平台审核、通知、配置、异常处理和经营数据查看。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>平台运营进入桌面后台</strong></div>
+        <div><span>最后得到什么</span><strong>小程序具备真实运营和兜底能力</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>平台运营 / 后台管理员</span>
+        <span>8-12人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F12.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="平台底座" data-priority="P0建议">
+      <div class="flow-head">
+        <span class="flow-id">F13</span>
+        <span class="badge">建议P0</span>
+      </div>
+      <h3>算力管理与充值消耗闭环</h3>
+      <p>为已开发AIGC提供算力充值、扣减、明细和失败返还账本。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>OPC用户进入AIGC算力管理</strong></div>
+        <div><span>最后得到什么</span><strong>AI内容生成具备清晰的付费和账本</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>OPC用户 / 财务 / 平台运营</span>
+        <span>6-9人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F13.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="平台经营" data-priority="P0建议">
+      <div class="flow-head">
+        <span class="flow-id">F14</span>
+        <span class="badge">建议P0</span>
+      </div>
+      <h3>选品中心与分销卡片生成闭环</h3>
+      <p>OPC用户可从Cosark商品池选品，生成可转发的分销卡片。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>OPC用户进入选品中心</strong></div>
+        <div><span>最后得到什么</span><strong>用户可以把商城商品变成可转发的经营素材</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>OPC用户 / 电商运营</span>
+        <span>5-8人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F14.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="平台经营" data-priority="P0建议">
+      <div class="flow-head">
+        <span class="flow-id">F15</span>
+        <span class="badge">建议P0</span>
+      </div>
+      <h3>分销订单与收益结算闭环</h3>
+      <p>展示通过OPC产生的分销订单、佣金、售后回滚和提现结算。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>OPC用户或老板进入分销订单</strong></div>
+        <div><span>最后得到什么</span><strong>销售、佣金、售后和结算状态透明</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>OPC用户 / 财务 / 老板</span>
+        <span>6-9人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F15.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="平台经营" data-priority="P1建议">
+      <div class="flow-head">
+        <span class="flow-id">F16</span>
+        <span class="badge">建议P1</span>
+      </div>
+      <h3>邀请朋友奖励与推广关系闭环</h3>
+      <p>OPC用户可邀请他人加入平台，并按审核通过等规则获得邀请奖励。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>OPC用户进入邀请朋友奖励</strong></div>
+        <div><span>最后得到什么</span><strong>平台增长关系和邀请奖励可追踪</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>OPC用户 / 平台运营</span>
+        <span>4-6人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F16.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="平台底座" data-priority="P0建议">
+      <div class="flow-head">
+        <span class="flow-id">F17</span>
+        <span class="badge">建议P0</span>
+      </div>
+      <h3>通知中心与业务跳转闭环</h3>
+      <p>统一承载审核、订单、系统、算力等通知，并能跳转对应业务。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>用户从首页或消息入口进入通知中心</strong></div>
+        <div><span>最后得到什么</span><strong>关键业务状态不会散落在各个页面</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>OPC用户 / 平台运营</span>
+        <span>5-7人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F17.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="平台底座" data-priority="P0建议">
+      <div class="flow-head">
+        <span class="flow-id">F18</span>
+        <span class="badge">建议P0</span>
+      </div>
+      <h3>账号互通与跨小程序授权闭环</h3>
+      <p>打通BeautyOPC、BeautyClaw、Cosark之间的账号与授权关系。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>用户进入账号互通授权页</strong></div>
+        <div><span>最后得到什么</span><strong>跨小程序课程资产、商城订单和分销归因可联动</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>OPC用户 / 客户 / 平台运营</span>
+        <span>6-10人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F18.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="平台底座" data-priority="P1建议">
+      <div class="flow-head">
+        <span class="flow-id">F19</span>
+        <span class="badge">建议P1</span>
+      </div>
+      <h3>账户设置与帮助支持闭环</h3>
+      <p>补齐账户设置、使用教程、联系客服、用户协议等基础页。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>用户进入我的页面基础服务</strong></div>
+        <div><span>最后得到什么</span><strong>空白页面被补齐，基础支持可自助完成</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>OPC用户 / 客服</span>
+        <span>3-5人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F19.html">打开这条流程</a>
+    </article>
+
+    <article class="flow-card" data-group="平台经营" data-priority="P2建议">
+      <div class="flow-head">
+        <span class="flow-id">F20</span>
+        <span class="badge">建议P2或展示占位</span>
+      </div>
+      <h3>接单广场机会浏览与申请占位闭环</h3>
+      <p>让首页接单广场从静态展示变成有字段、有详情、有待开放边界的机会入口。</p>
+      <div class="mini-path">
+        <div><span>从哪里开始</span><strong>用户打开首页接单广场</strong></div>
+        <div><span>最后得到什么</span><strong>接单广场从静态展示变成可理解的机会入口</strong></div>
+      </div>
+      <div class="flow-meta">
+        <span>OPC用户 / 平台运营</span>
+        <span>2-4人日展示版；完整报名8-12人日</span>
+      </div>
+      <a class="card-link" href="flow-pages/F20.html">打开这条流程</a>
+    </article>
+      </div>
+    </section>
+
+    <section class="section" id="schedule">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Milestone</div>
+          <h2>排期建议</h2>
+          <p>这是在AI协助开发前提下的建议排期。它不是最终报价，而是帮助业务方理解：不同阶段能验收什么结果。</p>
+        </div>
+      </div>
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>阶段</th>
+            <th>建议交付</th>
+            <th>需求方能看到什么</th>
+            <th>关键依赖</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>第1周</td>
+            <td>范围冻结与接口确认</td>
+            <td>确认20条流程哪些进入一期，明确验收人和优先级。</td>
+            <td>业务方决策、外部系统负责人、测试账号。</td>
+          </tr>
+          <tr>
+            <td>第2-3周</td>
+            <td>平台底座</td>
+            <td>账号互通、通知中心、账户设置、后台审核支撑可用。</td>
+            <td>微信登录、Cosark/BeautyClaw授权、后台框架。</td>
+          </tr>
+          <tr>
+            <td>第3-5周</td>
+            <td>AIGC算力与选品分销</td>
+            <td>用户能充值算力、查看账本、选商品、生成分销卡片。</td>
+            <td>支付、AIGC扣减、Cosark商品和归因。</td>
+          </tr>
+          <tr>
+            <td>第5-8周</td>
+            <td>妆造私教样板</td>
+            <td>客户可预约、填问卷、做面诊；老师可备课、上课、发小结和推荐。</td>
+            <td>课程规则、问卷模板、AI报告、商品库。</td>
+          </tr>
+          <tr>
+            <td>第8-10周</td>
+            <td>团队经营与后台运营</td>
+            <td>老板能管理老师、客户归属、模板、经营看板；后台能处理异常。</td>
+            <td>权限、组织关系、佣金规则、异常监控。</td>
+          </tr>
+          <tr>
+            <td>第10-12周</td>
+            <td>联调、UAT、试点准备</td>
+            <td>按真实业务从入驻到经营转化完整演练。</td>
+            <td>试点名单、样例商品、样例客户、验收时间。</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note">如果业务方只选择P0建议流程，周期可压缩；如果要求20条流程全部进入一期，应按12周以上评估，并预留外部接口联调风险。</p>
+    </section>
+
+    <section class="section" id="dev">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Delivery files</div>
+          <h2>给开发看的资料在哪里？</h2>
+          <p>首页负责让业务方快速判断价值和优先级；每条流程页和Markdown文档负责给开发拆任务、估接口、做验收。</p>
+        </div>
+      </div>
+      <table class="schedule-table">
+        <thead>
+          <tr><th>文件</th><th>用途</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>flow-pages/</td><td>20条单流程网页文档，适合需求方逐条评估。</td></tr>
+          <tr><td>flows/</td><td>20条单流程Markdown文档，适合开发拆任务和维护。</td></tr>
+          <tr><td>01_一期范围冻结说明.md</td><td>记录一期范围、优先级建议和边界。</td></tr>
+          <tr><td>03_系统边界与接口依赖.md</td><td>记录跨系统依赖、账号互通、商城、AIGC、后台边界。</td></tr>
+          <tr><td>04_开发拆分与排期评估.md</td><td>按阶段和流程给出排期、角色和验收节点。</td></tr>
+          <tr><td>05_风险与待确认问题.md</td><td>开发前必须确认的业务和接口风险。</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+  <script>
+    const filters = [...document.querySelectorAll(".filter")];
+    const cards = [...document.querySelectorAll(".flow-card")];
+    filters.forEach((filter) => {
+      filter.addEventListener("click", () => {
+        filters.forEach((item) => item.classList.remove("active"));
+        filter.classList.add("active");
+        const value = filter.dataset.filter;
+        cards.forEach((card) => {
+          card.style.display = value === "all" || card.dataset.group === value ? "" : "none";
+        });
       });
     });
-
-    document.querySelectorAll(".journey-btn").forEach((button) => {
-      button.addEventListener("click", () => {
-        document.querySelectorAll(".journey-btn").forEach((item) => item.classList.remove("active"));
-        button.classList.add("active");
-        renderFlow(button.dataset.flow);
-      });
-    });
-
-    document.querySelectorAll("[data-scroll]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const target = document.querySelector(button.dataset.scroll);
-        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-    });
-
-    renderRole("opc");
-    renderFlow("onboard");
   </script>
 </body>
 </html>
